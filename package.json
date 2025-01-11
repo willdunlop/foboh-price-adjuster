@@ -4,16 +4,25 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev && npm run prisma:generate",
+    "db:seed": "ts-node prisma/seed/index.ts",
+    "db:reset": "rm -f ./prisma/dev.db && npm run prisma:migrate && npm run db:seed",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@nextui-org/react": "^2.6.11",
+    "@prisma/client": "^6.2.1",
     "classnames": "^2.5.1",
+    "dayjs": "^1.11.13",
+    "decimal.js": "^10.4.3",
     "next": "15.1.4",
+    "prisma": "^6.2.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "redoc": "^2.2.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-react": "^5.18.2"
   },
@@ -28,6 +37,7 @@
     "eslint-config-next": "15.1.4",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   }
 }
