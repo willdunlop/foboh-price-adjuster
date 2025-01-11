@@ -51,4 +51,4 @@
 //     title: "Profile for Cork & Barrel Cellar"
 //   }
 
-  module.exports = { seedProducts, seedPriceProfile }
+//   module.exports = { seedProducts, seedPriceProfile }
