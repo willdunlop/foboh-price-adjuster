@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-// import { Button as NextButton } from '@nextui-org/react'
 import cn from 'classnames';
 
 type Variant = "primary" | "secondary" | "text"

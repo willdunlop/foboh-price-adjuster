@@ -9,6 +9,6 @@ interface Props {
 export const Box = ({ className, children }: Props) => {
 
     return (
-        <div className={cn("px-6 py-8 rounded-2xl", className)}>{children}</div>
+        <div className={cn("p-6 rounded-2xl", className)}>{children}</div>
     )
 }

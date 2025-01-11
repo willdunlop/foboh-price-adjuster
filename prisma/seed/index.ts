@@ -109,7 +109,7 @@ async function main() {
 
         await prisma.pricingProfile.create({
           data: {
-            title: "Profile for Cork & Barrel Cellar"
+            title: "Cork & Barrel Cellar #2"
           }
         })
         
