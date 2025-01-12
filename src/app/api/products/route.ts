@@ -39,7 +39,7 @@ export async function POST(request: Request) {
 			products = await prisma.product.findMany({
 				where: {
 					...filters,
-					title: { contains: search },
+					title: { contains: search, mode: 'insensitive' },
 				},
 			});
 			// If no results, search by SKU code
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
 				products = await prisma.product.findMany({
 					where: {
 						...filters,
-						skuCode: { contains: search },
+						skuCode: { contains: search, mode: 'insensitive' },
 					},
 				});
 			}
