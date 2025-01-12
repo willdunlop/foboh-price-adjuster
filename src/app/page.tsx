@@ -91,6 +91,7 @@ export default function Home() {
               placeholder="Category"
               className="mt-3 block w-full rounded-lg border border-black-grey p-3"
             />
+            {/** @TODO: Running out of time, just use react-select, make sure its multi */}
               {/* <Menu>
               <MenuButton>Category</MenuButton>
               <MenuItems transition anchor="bottom">
