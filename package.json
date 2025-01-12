@@ -9,8 +9,8 @@
     "db:seed": "ts-node prisma/seed/index.ts",
     "db:reset": "prisma migrate reset && npm run prisma:migrate && npm run db:seed",
     "tsc": "tsc",
-    "build": "npm run db:reset && next build",
-    "postinstall": "prisma generate",
+    "build": "prisma generate && next build",
+    "postinstall": "npm run prisma:migrate",
     "start": "next start",
     "lint": "next lint"
   },
