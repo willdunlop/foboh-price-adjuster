@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
 export async function POST(request: Request) {
 	try {
 		const { search, category, segment, brand } = await request.json();
-		const filters: Record<string, any> = {
+		const filters: Record<string, string> = {
 			...(category && { subCategory: category }),
 			...(segment && { segment }),
 			...(brand && { brand }),

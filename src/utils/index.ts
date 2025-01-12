@@ -1,12 +1,12 @@
 import Decimal from "decimal.js";
 
-export const debounce = (func: Function, delay: number) => {
-	let timer: NodeJS.Timeout;
-	return (...args: any[]) => {
-		clearTimeout(timer);
-		timer = setTimeout(() => func(...args), delay);
-	};
-};
+// export const debounce = (func: Function, delay: number) => {
+// 	let timer: NodeJS.Timeout;
+// 	return (...args: any[]) => {
+// 		clearTimeout(timer);
+// 		timer = setTimeout(() => func(...args), delay);
+// 	};
+// };
 
 
 type AdjustmentType = "fixed" | "dynamic";

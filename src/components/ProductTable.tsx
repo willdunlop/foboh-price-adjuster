@@ -15,7 +15,7 @@ interface ProductTableProps {
 
 
 
-export const ProductTable: React.FC<ProductTableProps> = ({ data, adjustments, onAdjustmentChange }) => {
+export const ProductTable: React.FC<ProductTableProps> = ({ data }) => {
     const productColumns: ColumnDef<Product>[] = [
         {
           accessorKey: 'title', // Key from the Product model

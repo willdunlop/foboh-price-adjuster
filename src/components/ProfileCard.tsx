@@ -17,7 +17,7 @@ export const ProfileCard = ({ title }: Props) => {
             </div>
             <div className="mt-6 flex justify-between">
                 <div>
-                    <p className="text-xs">You've created a Price Profile</p>
+                    <p className="text-xs">You&apos;ve created a Price Profile</p>
                     <h3 className="text-sm text-black-black font-medium">{title}</h3>
                     <p className="text-xs">Marked as Default, and expires in 16 Days</p>
                 </div>

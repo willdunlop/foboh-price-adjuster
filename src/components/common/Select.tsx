@@ -1,8 +1,8 @@
 import React from 'react'
-import type { useForm, UseFormRegisterReturn, UseFormSetValue, UseFormRegister, FieldValues } from 'react-hook-form'
+import type { UseFormRegisterReturn } from 'react-hook-form'
 import cn from 'classnames'
 
-interface Props<T extends FieldValues> extends React.SelectHTMLAttributes<HTMLSelectElement> {
+interface Props extends React.SelectHTMLAttributes<HTMLSelectElement> {
     formRegister: UseFormRegisterReturn
     name: string;
     value: string;
@@ -12,7 +12,7 @@ interface Props<T extends FieldValues> extends React.SelectHTMLAttributes<HTMLSe
 
 
 
-export const Select = <T extends FieldValues>({ formRegister, name, value, options, resetValue }: Props<T>) => {
+export const Select = ({ formRegister, name, value, options, resetValue }: Props) => {
     return (
         <div className="flex items-center">
             <select

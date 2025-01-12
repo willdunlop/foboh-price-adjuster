@@ -20,15 +20,11 @@ export interface FilterFormValues {
   brand: string;
 }
 
-interface Adjustment {
-  skuCode: string;
-  value: string;
-  newPrice: string;
-}
-
-type OptionType = { value: string; label: string };
-
-
+// interface Adjustment {
+//   skuCode: string;
+//   value: string;
+//   newPrice: string;
+// }
 
 const filterFormDefaultValues = {
   search: "",
@@ -38,10 +34,10 @@ const filterFormDefaultValues = {
 }
 
 export default function Home() {
-  const [loading, setLoading] = useState(false)
+  const [, setLoading] = useState(false)
   const [priceProfile, setPriceProfile] = useState<PricingProfile | null>(null)
   const [products, setProducts] = useState<Product[]>([])
-  const [adjustments, setAdjustments] = useState<Adjustment[]>([])
+  // const [adjustments, setAdjustments] = useState<Adjustment[]>([])
   const [selectedProducts, setSelectedProducts] = useState<Product[]>([])
 
   const { register, watch, setValue } = useForm<FilterFormValues>({
