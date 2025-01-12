@@ -3,26 +3,73 @@
 import { Button } from "@/components/common/Button";
 import { Box } from "@/components/common/Box";
 import { useEffect, useState } from "react";
-import { PricingProfile } from "@prisma/client";
+import { PricingProfile, Product } from "@prisma/client";
 import { ProfileCard } from "@/components/ProfileCard";
 import { AssignCustomersCard } from "@/components/AssignCustomersCard";
-import { Field, Input, Menu, MenuButton, MenuItem, MenuItems, Select } from "@headlessui/react";
+import { Field, Input, Menu, MenuButton, MenuItem, MenuItems, Radio, RadioGroup } from "@headlessui/react";
+import Select from "react-select";
+import { useForm } from "react-hook-form";
+
+type OptionType = { value: string; label: string };
+
+const options = [
+  { value: "chocolate", label: "Chocolate" },
+  { value: "strawberry", label: "Strawberry" },
+  { value: "vanilla", label: "Vanilla" },
+];
 
 export default function Home() {
+  const [products, setProducts] = useState<Product[]>([])
   const [priceProfile, setPriceProfile] = useState<PricingProfile | null>(null)
+  const [category, setCategory] = useState(null)
+
+  const { register, watch, setValue, handleSubmit } = useForm({
+    defaultValues: {
+      search: "",
+      category: "",
+      segment: "",
+      brand: "",
+    },
+  });
+  const formValues = watch();
+
+  // @TODO no any
+  const onSubmit = (data: any) => {
+    console.log("Filter values:", data);
+  };
+  const submitForm = async () => {
+    console.log("Filter values:", formValues);
+    // You can send formValues to the backend here:
+    // await fetch('/api/products/filter', { method: 'POST', body: JSON.stringify(formValues) });
+  };
 
   useEffect(() => {
+    submitForm();
+  }, [formValues])
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const res = await fetch("/api/products")
+      if (!res.ok) throw new Error("Failed to fetch pricing profile")
+      const products: Product[] = await res.json()
+      setProducts(products)
+
+    }
+
+
     const fetchPriceProfile = async () => {
       const res = await fetch("/api/pricing-profiles")
       if (!res.ok) throw new Error("Failed to fetch pricing profile")
       const profile: PricingProfile[] = await res.json()
       setPriceProfile(profile[0])
     }
+
     fetchPriceProfile()
+    fetchProducts()
   }, [])
 
   return (
-    <Box className="bg-slate-50 text-black-grey">
+    <Box className="max-w-[1200px] mx-auto mt-6 bg-slate-50 text-black-grey">
       <div className="flex justify-between">
         <div>
           <p className="text-base">Pricing Profile &gt; <span className="font-bold text-black-black">Setup a Profile</span></p>
@@ -65,69 +112,83 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="w-full pt-6 border-b border-slate-50">
-          <p className="text-sm text-black-grey">Search for Products</p>
-          <div className="flex gap-2">
-            {/** @TODO Common component */}
-            <Field>
-              <Input
+
+
+
+        <form className="space-y-4">
+          <div className="grid grid-cols-5 gap-2">
+            {/* Search Input */}
+            <div>
+              <input
                 type="text"
-                placeholder="Search"
-                className="mt-3 block w-full rounded-lg border border-black-grey p-3"
-              />
-            </Field>
-            <Field>
-              <Input
-                type="text"
+                id="search"
+                {...register("search")}
                 placeholder="Product / SKU"
                 className="mt-3 block w-full rounded-lg border border-black-grey p-3"
               />
-            </Field>
-            {/* <Field>
-            </Field> */}
-            <Field>
-            <Input
-              type="text"
-              placeholder="Category"
-              className="mt-3 block w-full rounded-lg border border-black-grey p-3"
-            />
-            {/** @TODO: Running out of time, just use react-select, make sure its multi */}
-              {/* <Menu>
-              <MenuButton>Category</MenuButton>
-              <MenuItems transition anchor="bottom">
-                <MenuItem><p>Wine</p></MenuItem>
-                <MenuItem><p>Beer</p></MenuItem>
-                <MenuItem><p>Liquor & Spirits</p></MenuItem>
-                <MenuItem><p>Cider</p></MenuItem>
-                <MenuItem><p>Premixed & Ready-to-go Drink</p></MenuItem>
-                <MenuItem><p>Other</p></MenuItem>
-              </MenuItems>
-            </Menu> */}
-              {/* <Select>
-                <option>Wine</option>
-                <option>Beer</option>
-                <option>Liquor & Spirits</option>
-                <option>Cider</option>
-                <option>Premixed & Ready-to-go Drink</option>
-                <option>Other</option>
+            </div>
+            {/* Category */}
+            <div className="flex items-center">
+              <select {...register("category")} className="mt-3 block w-full rounded-lg border border-black-grey bg-white p-3">
+                <option className="capitalize text-black-black text-xs font-medium" value="" disabled>Category</option>
+                <option value="wine">Wine</option>
+                <option value="beer">Beer</option>
+                <option value="liquor">Liquor & Spirits</option>
+              </select>
 
-              </Select> */}
-            </Field>
-            <Field>
-              <Input
-                type="text"
-                placeholder="Segment"
-                className="mt-3 block w-full rounded-lg border border-black-grey p-3"
-              />
-            </Field>
-            <Field>
-              <Input
-                type="text"
-                placeholder="Brand"
-                className="mt-3 block w-full rounded-lg border border-black-grey p-3"
-              />
-            </Field>
+                {/* {formValues.category && ( */}
+                  <button
+                    type="button"
+                    onClick={() => setValue("category", "")}
+                    className="flex h-full items-center text-gray-500 hover:text-black"
+                  >
+                    ✕
+                  </button>
+                {/* )} */}
+            </div>
+
+            {/* Segment */}
+            <div>
+              <select {...register("segment")} className="mt-3 block w-full rounded-lg border border-black-grey bg-white p-3">
+                <option className="capitalize text-black-black text-xs font-medium" value="" disabled>Segment</option>
+                <option value="luxury">Luxury</option>
+                <option value="value">Value</option>
+              </select>
+            </div>
+
+            {/* Brand */}
+            <div>
+              <select {...register("brand")} className="mt-3 block w-full rounded-lg border border-black-grey bg-white p-3">
+                <option className="capitalize text-black-black text-xs font-medium" value="" disabled>Brand</option>
+                <option value="high-garden">High Garden</option>
+                <option value="koyama-wines">Koyama Wines</option>
+              </select>
+            </div>
+
           </div>
+
+        </form>
+
+
+
+
+        <div className="w-full pt-6 border-b border-slate-50">
+          <p>Showing *count* for *prod/sku* *category* *brand*</p>
+          <div>
+            <Button variant="text">Deselect All</Button>
+            <Button variant="text">Select All</Button>
+          </div>
+
+          {products.map((product) => (
+            <div className="max-w-96 mb-4">
+              <p className="text-black-black">{product.title}</p>
+              <div className="mt-2 flex justify-between">
+                <p>{product.skuCode}</p>
+                <p>{product.category}</p>
+                <p>{product.segment}</p>
+              </div>
+            </div>
+          ))}
         </div>
 
       </Box>
