@@ -4,7 +4,7 @@ import { Box } from './common/Box';
 export const AssignCustomersCard = () => {
     return (
         <Box className="bg-white mt-6">
-            <div className="flex justify-between w-full pb-6 border-b border-slate-50">
+            <div className="flex justify-between w-full pb-6 border-b border-slate-200">
                 <div>
                     <h2 className="text-black-black font-medium">Assign Customers to Pricing Profile</h2>
                     <p className="text-sm text-black-grey">Choose which customers this profile will be applied to</p>

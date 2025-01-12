@@ -7,7 +7,7 @@ interface Props {
 export const ProfileCard = ({ title }: Props) => {
     return (
         <Box className="bg-white mt-6">
-            <div className="flex justify-between w-full pb-6 border-b border-slate-50">
+            <div className="flex justify-between w-full pb-6 border-b border-slate-200">
                 <div>
                     <h2 className="text-black-black font-medium">Basic Pricing Profile</h2>
                     {/** @TODO MAKE ME A PROPER DESCRIPTION */}
