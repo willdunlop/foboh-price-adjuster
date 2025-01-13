@@ -13,6 +13,8 @@ export async function GET() {
 		},
 	});
 
+	
+
 	return NextResponse.json(profiles);
 }
 
@@ -24,8 +26,6 @@ export async function POST(req: NextRequest) {
 	try {
 		const body: PostReqBody = await req.json();
 		const { id, title, adjustmentMode, adjustmentType, adjustments } = body;
-
-		
 	
 		const profile = await prisma.pricingProfile.upsert({
 			where: { id },

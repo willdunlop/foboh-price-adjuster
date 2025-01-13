@@ -18,9 +18,9 @@ export async function GET(req: NextRequest) {
 	return NextResponse.json(products);
 }
 
-export async function POST(request: Request) {
+export async function POST(req: NextRequest) {
 	try {
-		const { search, category, segment, brand } = await request.json();
+		const { search, category, segment, brand } = await req.json();
 		const filters: Record<string, string> = {
 			...(category && { subCategory: category }),
 			...(segment && { segment }),
@@ -42,7 +42,7 @@ export async function POST(request: Request) {
 					title: { contains: search },
 				},
 			});
-			// If no results, search by SKU code
+			
 			if (products.length === 0) {
 				products = await prisma.product.findMany({
 					where: {

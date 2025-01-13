@@ -11,7 +11,6 @@ interface Props extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLB
 }
 
 export const Button = ({ variant="primary",  children, disabled, className }: Props) => {
-
     return (
         <button
             className={cn(

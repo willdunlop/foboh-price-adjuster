@@ -29,7 +29,6 @@ export const RadioGroup = <T extends FieldValues>({ name, control, options, labe
                                 />
                                 {option.label}
                             </label>
-
                         ))}
                     </div>
                 </div>

@@ -17,6 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/common/Button";
 import { toast, ToastContainer } from "react-toastify";
 import { calculateNewPrice } from "@/utils";
+import { ProductFilters } from "@/components/ProductFilters";
 
 
 export interface FilterFormValues {
@@ -107,9 +108,7 @@ export default function Home() {
 
   const handleAdjustmentChange = (productId: string, value: number | null) => {
     if (Number(value) < -1) return;
-
     const index = adjustmentFields.findIndex((field) => field.productId === productId);
-
     if (index >= 0) {
       update(index, { productId, value });
     } else {
@@ -129,7 +128,6 @@ export default function Home() {
       if (!response.ok) throw new Error("Failed to fetch filtered products");
       const data: Product[] = await response.json();
       setProducts(data);
-
     } catch (error) {
       console.error("Error fetching products:", error);
     } finally {
@@ -159,8 +157,8 @@ export default function Home() {
           ...profileValues
         }),
       })
-      if (!res.ok) throw new Error("Failed to update pricing profile");
 
+      if (!res.ok) throw new Error("Failed to update pricing profile");
       toast.success("Pricing profile successfully updated")
     } catch (error) {
       console.error("Error updating pricing profile", error)
@@ -172,7 +170,6 @@ export default function Home() {
 
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
-
     debounceRef.current = setTimeout(() => {
       fetchFilteredProducts(filterFormValues);
     }, 300);
@@ -190,7 +187,6 @@ export default function Home() {
       const profile: PricingProfile[] = await res.json()
       setPriceProfile(profile[0])
     }
-
     fetchPriceProfile()
   }, [])
 
@@ -201,7 +197,6 @@ export default function Home() {
 
       {priceProfile && (<ProfileCard title={priceProfile.title} />)}
 
-      {/** START PRODUCT PRICING */}
       <Box className="bg-white mt-6">
         <div className="flex justify-between w-full pb-6 border-b border-slate-200">
           <div>
@@ -209,7 +204,6 @@ export default function Home() {
             <p className="text-sm text-black-grey">Set details</p>
           </div>
         </div>
-
         <div className="flex justify-between w-full pt-6 border-b border-slate-200">
           <div>
             <p className="text-sm text-black-grey">You are creating a Pricing Profile for</p>
@@ -218,47 +212,12 @@ export default function Home() {
           </div>
         </div>
 
+        <ProductFilters
+          filterFormValues={filterFormValues}
+          registerFilter={registerFilter}
+          setFilterValue={setFilterValue}
+        />
 
-        <form className="space-y-4">
-          <div className="grid grid-cols-5 gap-2">
-            {/* Search Input */}
-            <div>
-              <Input
-                formRegister={registerFilter("search")}
-                type="text"
-                id="search"
-                placeholder="Product / SKU"
-              />
-            </div>
-            {/* Category */}
-            <Select
-              name="Category"
-              formRegister={registerFilter("category")}
-              value={filterFormValues.category}
-              options={["Wine", "Beer", "Liquor & Spirits", "Cider", "Premixed & Ready-to-Drink", "Other"]}
-              resetValue={() => setFilterValue("category", "")}
-            />
-
-            {/* Segment */}
-            <Select
-              name="Segment"
-              formRegister={registerFilter("segment")}
-              value={filterFormValues.segment}
-              options={["White", "Red", "Sparkling", "Port/Dessert"]}
-              resetValue={() => setFilterValue("segment", "")}
-            />
-            {/* Brand */}
-            <Select
-              name="Brand"
-              formRegister={registerFilter("brand")}
-              value={filterFormValues.brand}
-              options={["High Garden", "Koyama Wines", "Lacourte-Godbillon"]}
-              resetValue={() => setFilterValue("brand", "")}
-            />
-          </div>
-        </form>
-
-        {/** Product results */}
         <div className="w-full py-6 border-b border-slate-200">
           <p>Showing {products.length} {products.length === 1 ? "Result" : "Results"} {isFiltered && `for ${filterFormValues.search} ${filterFormValues.category} ${filterFormValues.segment} ${filterFormValues.brand}`}</p>
           {products.map((product) => (
@@ -274,8 +233,8 @@ export default function Home() {
             <p>You&apos;ve selected <span>{selectedProducts.length} Products</span>, these will be added to {priceProfile?.title}</p>
           )}
         </div>
-        {!!selectedProducts.length && (
 
+        {!!selectedProducts.length && (
           <div className="w-full py-6 border-b border-slate-200">
             <form onSubmit={handleProfileSubmit(onProfileSubmit)}>
               <label>Based on</label>
@@ -285,28 +244,24 @@ export default function Home() {
                 options={['Based on Price']}
                 value="Based on Price"
               />
-
               <RadioGroup
                 name="adjustmentType"
                 control={control}
                 label="Set price adjustment mode"
                 options={[{ value: "fixed", label: "Fixed ($)" }, { value: "dynamic", label: "Dynamic (%)" }]}
               />
-
               <RadioGroup
                 name="adjustmentMode"
                 control={control}
                 label="Set price adjustment increment mode"
                 options={[{ value: "increase", label: "Increase +" }, { value: "decrease", label: "Decrease -" }]}
               />
-
               <ProductTable
                 data={selectedProducts}
                 profile={profileFormValues}
                 adjustments={adjustmentFields}
                 onAdjustmentChange={handleAdjustmentChange}
               />
-
               <div className="flex justify-end gap-2">
                 <Button variant="text">Back</Button>
                 <Button
@@ -319,7 +274,6 @@ export default function Home() {
           </div>
         )}
       </Box>
-      {/** END PRODUCT PRICING */}
 
       <AssignCustomersCard />
     </Box>

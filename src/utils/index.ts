@@ -18,7 +18,6 @@ export function calculateNewPrice({
 	if (!adjustmentValue && Number(adjustmentValue) < -1) return;
 	const price = new Decimal(globalPrice);
 	const adjustment = new Decimal(adjustmentValue || 0);
-  
 	let newPrice: Decimal;
   
 	if (adjustmentType === "fixed") {

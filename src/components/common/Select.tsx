@@ -10,8 +10,6 @@ interface Props extends React.SelectHTMLAttributes<HTMLSelectElement> {
     resetValue?: () => void
 }
 
-
-
 export const Select = ({ formRegister, name, value, options, className, resetValue }: Props) => {
     return (
         <div className="flex items-center">

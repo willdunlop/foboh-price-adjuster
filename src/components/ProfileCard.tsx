@@ -10,7 +10,6 @@ export const ProfileCard = ({ title }: Props) => {
             <div className="flex justify-between w-full pb-6 border-b border-slate-200">
                 <div>
                     <h2 className="text-black-black font-medium">Basic Pricing Profile</h2>
-                    {/** @TODO MAKE ME A PROPER DESCRIPTION */}
                     <p className="text-sm text-black-grey">Cheeky little description goes in here</p>
                 </div>
                 <span className="relative pl-4 text-green-action font-medium inline-flex items-center before:content-[''] before:w-2 before:h-2 before:bg-green-action before:rounded-full before:mr-2">Completed</span>

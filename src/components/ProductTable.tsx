@@ -16,9 +16,6 @@ interface ProductTableProps {
     onAdjustmentChange: (productId: string, value: number | null) => void;
 }
 
-
-
-
 export const ProductTable: React.FC<ProductTableProps> = ({ data, profile, adjustments, onAdjustmentChange }) => {
     const productColumns: ColumnDef<Product>[] = [
         {

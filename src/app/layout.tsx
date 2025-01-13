@@ -5,7 +5,6 @@ import "./globals.css";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
-  // display: "swap", // Ensures text remains visible during font loading
 });
 
 export const metadata: Metadata = {
