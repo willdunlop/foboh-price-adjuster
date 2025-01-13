@@ -9,7 +9,6 @@ import { AssignCustomersCard } from "@/components/AssignCustomersCard";
 import { useFieldArray, useForm } from "react-hook-form";
 import { Select } from "@/components/common/Select";
 import { ProductTable } from "@/components/ProductTable";
-import { Input } from "@/components/common/Input";
 import { ProductSearchResult } from "@/components/ProductSearchResult";
 import { OnboardingBreadcrumb } from "@/components/common/OnboardingBreadcrumb";
 import { RadioGroup } from "@/components/common/RadioGroup";
