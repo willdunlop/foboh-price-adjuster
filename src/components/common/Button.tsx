@@ -10,7 +10,7 @@ interface Props extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLB
     variant?: Variant
 }
 
-export const Button = ({ variant="primary",  children, className }: Props) => {
+export const Button = ({ variant="primary",  children, disabled, className }: Props) => {
 
     return (
         <button
@@ -19,10 +19,13 @@ export const Button = ({ variant="primary",  children, className }: Props) => {
                 {
                     "bg-green-primary text-white": variant === "primary",
                     "bg-white font-black": variant === "secondary",
-                    "bg-none font-black": variant === "text"
+                    "bg-none font-black": variant === "text",
+
+                    "bg-slate-300 cursor-not-allowed": disabled
                 },
                 className
             )}
+            disabled={disabled}
         >
             {children}
         </button>

@@ -8,6 +8,7 @@ import { Input } from './common/Input';
 import { ProfileFormValues } from '@/app/page';
 import { calculateNewPrice } from '@/utils';
 import { FieldErrors } from 'react-hook-form';
+import classNames from 'classnames';
 
 interface ProductTableProps {
     data: Product[];
@@ -87,8 +88,15 @@ export const ProductTable: React.FC<ProductTableProps> = ({ data, profile, adjus
                     adjustmentValue: adjustment?.value,
                     isIncrement: profile?.adjustmentMode === "increase"
                 })
-
-                if (newPrice) return <span>$ {newPrice.toFixed(2)}</span>
+                const isNegative = newPrice?.isNegative()
+                if (newPrice) return (
+                    <div className="flex flex-col items-center w-[120px]">
+                    <span className={classNames("", {
+                        "text-red-500": isNegative,
+                    })}>$ {newPrice.toFixed(2)}</span>
+                    <p className="h-3 text-red-500">{isNegative && "Negative value"}</p>
+                    </div>
+                )
             }
         }
     ];

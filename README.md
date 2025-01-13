@@ -1,36 +1,156 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FOBOH Pricing Challenge
+
+## Overview
+
+This project is a submission for the FOBOH Pricing Challenge. It demonstrates a pricing module where suppliers can:
+
+-   Filter products by category, segment, and brand.
+-   Select products and make pricing adjustments (fixed or dynamic).
+-   Save those pricing adjustment to their profile.
+
+The project includes a backend API to handle pricing profile CRUD operations and pricing adjustments, built with Next.js (App Router) and Prisma ORM.
+
+## Tech Stack
+
+### Frontend
+
+-   Framework: Next.js (App Router)
+-   Styling: Tailwind CSS
+-   Forms: React Hook Form
+-   Validation: Zod (not fully implemented)
+
+### Backend
+
+-   Database: SQLite
+-   ORM: Prisma
+-   API: RESTful API routes built with Next.js
+
+## Features
+
+-   **Product Filtering**: Search and filter products by name, SKU, category, segment, and brand.
+-   **Adjust Pricing**: Apply pricing adjustments (fixed or dynamic) to multiple products.
+-   **Dynamic Table**: Display product adjustments with inline editing and validation.
+-   **Form Validation**: Zod-based validation for pricing adjustments and profiles. (Incomplete)
+-   **Database Management**: CRUD endpoints for pricing profiles and adjustments.
+
+## Requirements
+
+### System
+
+-   Node.js v16+
+-   SQLite
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the Repository
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+git@github.com:willdunlop/foboh-price-adjuster.git
+cd foboh-pricing-challenge
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Set Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create a `.env` file in the root directory with the following variables:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+DATABASE_URL=file:./dev.db
+```
 
-## Learn More
+3. Install all project dependencies using:
 
-To learn more about Next.js, take a look at the following resources:
+```
+npm install
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. Initialize the Database
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Run Prisma migrations and database seeder to set up the database:
 
-## Deploy on Vercel
+```
+npm run db:setup
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+5. Start the Development Server
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+npm run dev
+```
+
+The application will be available at http://localhost:3000.
+
+# API Endpoints
+
+## Swagger
+Swagger documentation is available at http://localhost:3000/swagger
+
+## Product Endpoints
+
+1. **POST** `/api/products`
+
+    - Filters products based on search, category, segment, and brand.
+    - Request Body:
+
+    ```
+    {
+        "search": "string",
+        "category": "string",
+        "segment": "string",
+        "brand": "string"
+    }
+    ```
+
+
+## Pricing Profile Endpoints
+
+1. **GET** `/api/pricing-profiles`
+    - Fetches all pricing profiles with adjustments.
+
+    **POST** `/api/pricing-profiles`
+    - Creates or updates a pricing profile.
+    - Request Body:
+    ```
+        {
+          "id": "string",
+          "title": "string",
+          "adjustmentMode": "increase | decrease",
+          "adjustmentType": "fixed | dynamic",
+          "adjustments": [
+            {
+              "productId": "string",
+              "value": "string"
+            }
+          ]
+        }
+    ```
+
+# Folder Structure
+```
+├── prisma/               # Prisma schema, migrations, db seeder
+├── src/
+│   ├── app/              # Next.js App Router
+│   ├── components/       # Reusable UI components
+│   ├── lib/              # Utility libraries (e.g., Prisma client)
+│   ├── styles/           # Tailwind CSS styles
+├── .env                  # Environment variables
+├── package.json          # Project configuration
+├── README.md             # Project documentation
+```
+
+# Improvements
+
+Given more time, these additional features and refinements could be implemented:
+
+- Pagination: Improve scalability for large product datasets.
+- Validation: Finish implementing client-side validation for more robust error handling.
+- Unit Testing: Add Jest/React Testing Library for better test coverage.
+- Design:
+    - Full design was not implemented.
+        - When editing your profile, only the 'multiple products' selection is functional. The radio buttons were emitted as a result
+        - The 'pricing profile for one' screen was not implemented. Save occurs when pressing 'Next' (re-labled to 'Submit')
+        - UI Elmements such as the side bar and top nav bar were not included as they had no practical use in the scope of this challenge
+        - Tha ability to see your saved changes would provide a nicer user experience
+- Bugs: Address remaining and known bugs
+    - **POST** `/api/pricing-profiles`: This endpoint can update a profile and therefore the app works. Attempting to create through swagger will cause a `500` error
+
+

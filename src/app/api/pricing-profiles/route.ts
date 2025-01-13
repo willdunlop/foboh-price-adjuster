@@ -21,34 +21,40 @@ type PostReqBody = Omit<PricingProfile, 'priceAdjustments'> & {
 }
 
 export async function POST(req: NextRequest) {
-	const body: PostReqBody = await req.json();
-	const { id, title, adjustmentMode, adjustmentType, adjustments } = body;
+	try {
+		const body: PostReqBody = await req.json();
+		const { id, title, adjustmentMode, adjustmentType, adjustments } = body;
 
-	const profile = await prisma.pricingProfile.upsert({
-		where: { id },
-		create: {
-			title,
-			adjustmentMode,
-			adjustmentType,
-			priceAdjustments: {
-				create: adjustments.map((adj) => ({
+		
+	
+		const profile = await prisma.pricingProfile.upsert({
+			where: { id },
+			create: {
+				title,
+				adjustmentMode,
+				adjustmentType,
+				priceAdjustments: {
+					create: adjustments.map((adj) => ({
+						productId: adj.productId,
+						value: adj.value
+					})),
+				},
+			},
+			update: {
+				title,
+				adjustmentMode,
+				adjustmentType,
+				priceAdjustments: {
+				  create: adjustments.map((adj) => ({
 					productId: adj.productId,
-					value: adj.value
-				})),
-			},
-		},
-		update: {
-			title,
-			adjustmentMode,
-			adjustmentType,
-			priceAdjustments: {
-			  create: adjustments.map((adj) => ({
-				productId: adj.productId,
-				value: adj.value,
-			  })),
-			},
-		  },
-	});
-
-	return NextResponse.json(profile, { status: 201 });
+					value: adj.value,
+				  })),
+				},
+			  },
+		});
+	
+		return NextResponse.json(profile, { status: 201 });
+	} catch (err) {
+		console.error(err)
+	}
 }

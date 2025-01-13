@@ -16,6 +16,7 @@ import { RadioGroup } from "@/components/common/RadioGroup";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/common/Button";
 import { toast, ToastContainer } from "react-toastify";
+import { calculateNewPrice } from "@/utils";
 
 
 export interface FilterFormValues {
@@ -27,7 +28,7 @@ export interface FilterFormValues {
 
 export interface ProfileFormValues {
   basedOn: 'Based on Price';
-  adjustmentType: 'fixed' | 'dynamic' | null,
+  adjustmentType: 'fixed' | 'dynamic',
   adjustmentMode: 'increase' | 'decrease' | null
   adjustments: { productId: string; value: number | null; }[];
 }
@@ -90,6 +91,19 @@ export default function Home() {
   });
 
   const profileFormValues = watchProfile();
+  const someNegatives = useMemo(() => (
+    profileFormValues.adjustments.some((adj) => {
+      const product = products.find((prod) => prod.id === adj.productId)
+      const newPrice = calculateNewPrice({
+        globalPrice: product?.globalPrice ?? "",
+        adjustmentType: profileFormValues.adjustmentType,
+        isIncrement: profileFormValues.adjustmentMode === "increase",
+        adjustmentValue: adj.value
+      })
+      return newPrice?.isNegative()
+    })
+  ), [profileFormValues.adjustments])
+
 
   const handleAdjustmentChange = (productId: string, value: number | null) => {
     if (Number(value) < -1) return;
@@ -181,7 +195,7 @@ export default function Home() {
   }, [])
 
   return (
-    <Box className="max-w-[1200px] mx-auto mt-6 bg-slate-50 text-black-grey">
+    <Box className="max-w-[1200px] mx-auto my-6 bg-slate-50 text-black-grey">
       <ToastContainer />
       <OnboardingBreadcrumb />
 
@@ -295,7 +309,11 @@ export default function Home() {
 
               <div className="flex justify-end gap-2">
                 <Button variant="text">Back</Button>
-                <Button type="submit" className="px-10">Submit</Button>
+                <Button
+                  type="submit"
+                  className="px-10"
+                  disabled={someNegatives}
+                >Submit</Button>
               </div>
             </form>
           </div>
