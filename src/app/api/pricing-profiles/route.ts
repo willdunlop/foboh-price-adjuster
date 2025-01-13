@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from '../../../lib/prisma'
-// import { PriceAdjustment } from "@prisma/client";
+import { PricingProfile } from "@prisma/client";
 
 export async function GET() {
 	const profiles = await prisma.pricingProfile.findMany({
@@ -16,20 +16,38 @@ export async function GET() {
 	return NextResponse.json(profiles);
 }
 
-export async function POST(req: NextRequest) {
-	const body = await req.json();
-	const { title /*adjustments*/ } = body;
+type PostReqBody = Omit<PricingProfile, 'priceAdjustments'> & {
+	adjustments: { productId: string, value: string }[]
+}
 
-	const profile = await prisma.pricingProfile.create({
-		data: {
+export async function POST(req: NextRequest) {
+	const body: PostReqBody = await req.json();
+	const { id, title, adjustmentMode, adjustmentType, adjustments } = body;
+
+	const profile = await prisma.pricingProfile.upsert({
+		where: { id },
+		create: {
 			title,
-			// priceAdjustments: {
-			// 	create: adjustments.map((adj: PriceAdjustment) => ({
-			// 		title: adj.title,
-			// 		productId: adj.productId,
-			// 	})),
-			// },
+			adjustmentMode,
+			adjustmentType,
+			priceAdjustments: {
+				create: adjustments.map((adj) => ({
+					productId: adj.productId,
+					value: adj.value
+				})),
+			},
 		},
+		update: {
+			title,
+			adjustmentMode,
+			adjustmentType,
+			priceAdjustments: {
+			  create: adjustments.map((adj) => ({
+				productId: adj.productId,
+				value: adj.value,
+			  })),
+			},
+		  },
 	});
 
 	return NextResponse.json(profile, { status: 201 });

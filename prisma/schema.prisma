@@ -22,19 +22,19 @@ model Product {
   subCategory     String
   segment         String
   globalPrice     Decimal
-  PriceAdjustment PriceAdjustment[]
+  priceAdjustment PriceAdjustment[]
 }
 
 model PricingProfile {
-  id               String            @id @default(uuid())
-  title            String
+  id             String  @id @default(uuid())
+  title          String
+  adjustmentType String?
+  adjustmentMode String?
   priceAdjustments PriceAdjustment[]
 }
 
 model PriceAdjustment {
   id               String         @id @default(uuid())
-  type             String
-  isIncrement      Boolean
   value            Decimal
   pricingProfileId String
   pricingProfile   PricingProfile @relation(fields: [pricingProfileId], references: [id])

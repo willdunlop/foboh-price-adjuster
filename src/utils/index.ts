@@ -1,21 +1,12 @@
 import Decimal from "decimal.js";
 
-// export const debounce = (func: Function, delay: number) => {
-// 	let timer: NodeJS.Timeout;
-// 	return (...args: any[]) => {
-// 		clearTimeout(timer);
-// 		timer = setTimeout(() => func(...args), delay);
-// 	};
-// };
-
-
 type AdjustmentType = "fixed" | "dynamic";
 
 interface PriceAdjustment {
-  globalPrice: number;
+  globalPrice: number | string | Decimal;
   adjustmentType: AdjustmentType;
   isIncrement: boolean;
-  adjustmentValue: number;
+  adjustmentValue?: number | string | Decimal | null;
 }
 
 export function calculateNewPrice({
@@ -23,9 +14,10 @@ export function calculateNewPrice({
   adjustmentType,
   isIncrement,
   adjustmentValue,
-}: PriceAdjustment): Decimal {
+}: PriceAdjustment): Decimal | undefined {
+	if (!adjustmentValue && Number(adjustmentValue) < -1) return;
 	const price = new Decimal(globalPrice);
-	const adjustment = new Decimal(adjustmentValue);
+	const adjustment = new Decimal(adjustmentValue || 0);
   
 	let newPrice: Decimal;
   

@@ -13,14 +13,14 @@ CREATE TABLE "Product" (
 -- CreateTable
 CREATE TABLE "PricingProfile" (
     "id" TEXT NOT NULL PRIMARY KEY,
-    "title" TEXT NOT NULL
+    "title" TEXT NOT NULL,
+    "adjustmentType" TEXT,
+    "adjustmentMode" TEXT
 );
 
 -- CreateTable
 CREATE TABLE "PriceAdjustment" (
     "id" TEXT NOT NULL PRIMARY KEY,
-    "type" TEXT NOT NULL,
-    "isIncrement" BOOLEAN NOT NULL,
     "value" DECIMAL NOT NULL,
     "pricingProfileId" TEXT NOT NULL,
     "productId" TEXT NOT NULL,

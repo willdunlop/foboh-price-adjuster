@@ -4,15 +4,15 @@ import cn from 'classnames'
 
 interface Props extends React.SelectHTMLAttributes<HTMLSelectElement> {
     formRegister: UseFormRegisterReturn
-    name: string;
+    name?: string;
     value: string;
     options: string[]
-    resetValue: () => void
+    resetValue?: () => void
 }
 
 
 
-export const Select = ({ formRegister, name, value, options, resetValue }: Props) => {
+export const Select = ({ formRegister, name, value, options, className, resetValue }: Props) => {
     return (
         <div className="flex items-center">
             <select
@@ -22,16 +22,17 @@ export const Select = ({ formRegister, name, value, options, resetValue }: Props
                     {
                         "select-input__border": value,
                         "rounded-lg": !value
-                    }
+                    },
+                    className
                 )}>
-                <option className="capitalize text-black-black text-xs font-medium" value="" disabled>{name}</option>
+                    {name && (<option className="capitalize text-black-black text-xs font-medium" value="" disabled>{name}</option>)}
                 {options.map((option) => (
                     <option key={option} value={option}>{option}</option>
 
                 ))}
             </select>
 
-            {value && (
+            {value && typeof resetValue === "function" &&  (
                 <button
                     type="button"
                     onClick={resetValue}
