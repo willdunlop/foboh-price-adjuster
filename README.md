@@ -45,13 +45,19 @@ The project includes a backend API to handle pricing profile CRUD operations and
 1. Clone the Repository
 
 ```
-git@github.com:willdunlop/foboh-price-adjuster.git
+git clone git@github.com:willdunlop/foboh-price-adjuster.git
 cd foboh-pricing-challenge
 ```
 
 2. Set Environment Variables
 
-Create a `.env` file in the root directory with the following variables:
+Create a `.env` file in the root directory using the `env.axample` file as a reference. 
+
+```
+cp env.example .env
+```
+
+Check you new `.env` file, there should be just one variable which is:
 
 ```
 DATABASE_URL=file:./dev.db
