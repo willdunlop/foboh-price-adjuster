@@ -22,7 +22,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} antialiased`}
       >
-          {children}
+        {children}
       </body>
     </html>
   );

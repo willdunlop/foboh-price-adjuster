@@ -46,7 +46,7 @@ The project includes a backend API to handle pricing profile CRUD operations and
 
 ```
 git clone git@github.com:willdunlop/foboh-price-adjuster.git
-cd foboh-pricing-challenge
+cd foboh-price-adjuster
 ```
 
 2. Set Environment Variables

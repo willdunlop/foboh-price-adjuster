@@ -190,91 +190,93 @@ export default function Home() {
   }, [])
 
   return (
-    <Box className="max-w-[1200px] mx-auto my-6 bg-slate-50 text-black-grey">
-      <ToastContainer />
-      <OnboardingBreadcrumb />
+    <div className="w-full h-screen py-6 bg-green-primary">
+      <Box className="max-w-[1200px] mx-auto bg-slate-100 text-black-grey">
+        <ToastContainer />
+        <OnboardingBreadcrumb />
 
-      {priceProfile && (<ProfileCard title={priceProfile.title} />)}
+        {priceProfile && (<ProfileCard title={priceProfile.title} />)}
 
-      <Box className="bg-white mt-6">
-        <div className="flex justify-between w-full pb-6 border-b border-slate-200">
-          <div>
-            <h2 className="text-black-black font-medium">Set Product Pricing</h2>
-            <p className="text-sm text-black-grey">Set details</p>
-          </div>
-        </div>
-        <div className="flex justify-between w-full pt-6 border-b border-slate-200">
-          <div>
-            <p className="text-sm text-black-grey">You are creating a Pricing Profile for</p>
-            <div className="flex mt-3">
+        <Box className="bg-white mt-6">
+          <div className="flex justify-between w-full pb-6 border-b border-slate-200">
+            <div>
+              <h2 className="text-black-black font-medium">Set Product Pricing</h2>
+              <p className="text-sm text-black-grey">Set details</p>
             </div>
           </div>
-        </div>
+          <div className="flex justify-between w-full pt-6 border-b border-slate-200">
+            <div>
+              <p className="text-sm text-black-grey">You are creating a Pricing Profile for</p>
+              <div className="flex mt-3">
+              </div>
+            </div>
+          </div>
 
-        <ProductFilters
-          filterFormValues={filterFormValues}
-          registerFilter={registerFilter}
-          setFilterValue={setFilterValue}
-        />
+          <ProductFilters
+            filterFormValues={filterFormValues}
+            registerFilter={registerFilter}
+            setFilterValue={setFilterValue}
+          />
 
-        <div className="w-full py-6 border-b border-slate-200">
-          <p>Showing {products.length} {products.length === 1 ? "Result" : "Results"} {isFiltered && `for ${filterFormValues.search} ${filterFormValues.category} ${filterFormValues.segment} ${filterFormValues.brand}`}</p>
-          {products.map((product) => (
-            <ProductSearchResult
-              key={product.id}
-              product={product}
-              checked={selectedProducts.some((p) => p.id === product.id)}
-              onChange={onProductSelect}
-            />
-          ))}
+          <div className="w-full py-6 border-b border-slate-200">
+            <p>Showing {products.length} {products.length === 1 ? "Result" : "Results"} {isFiltered && `for ${filterFormValues.search} ${filterFormValues.category} ${filterFormValues.segment} ${filterFormValues.brand}`}</p>
+            {products.map((product) => (
+              <ProductSearchResult
+                key={product.id}
+                product={product}
+                checked={selectedProducts.some((p) => p.id === product.id)}
+                onChange={onProductSelect}
+              />
+            ))}
+
+            {!!selectedProducts.length && (
+              <p>You&apos;ve selected <span>{selectedProducts.length} Products</span>, these will be added to {priceProfile?.title}</p>
+            )}
+          </div>
 
           {!!selectedProducts.length && (
-            <p>You&apos;ve selected <span>{selectedProducts.length} Products</span>, these will be added to {priceProfile?.title}</p>
+            <div className="w-full py-6 border-b border-slate-200">
+              <form onSubmit={handleProfileSubmit(onProfileSubmit)}>
+                <label>Based on</label>
+                <Select
+                  formRegister={registerProfile("basedOn")}
+                  className="max-w-[400px]"
+                  options={['Based on Price']}
+                  value="Based on Price"
+                />
+                <RadioGroup
+                  name="adjustmentType"
+                  control={control}
+                  label="Set price adjustment mode"
+                  options={[{ value: "fixed", label: "Fixed ($)" }, { value: "dynamic", label: "Dynamic (%)" }]}
+                />
+                <RadioGroup
+                  name="adjustmentMode"
+                  control={control}
+                  label="Set price adjustment increment mode"
+                  options={[{ value: "increase", label: "Increase +" }, { value: "decrease", label: "Decrease -" }]}
+                />
+                <ProductTable
+                  data={selectedProducts}
+                  profile={profileFormValues}
+                  adjustments={adjustmentFields}
+                  onAdjustmentChange={handleAdjustmentChange}
+                />
+                <div className="flex justify-end gap-2">
+                  <Button variant="text">Back</Button>
+                  <Button
+                    type="submit"
+                    className="px-10"
+                    disabled={someNegatives}
+                  >Submit</Button>
+                </div>
+              </form>
+            </div>
           )}
-        </div>
+        </Box>
 
-        {!!selectedProducts.length && (
-          <div className="w-full py-6 border-b border-slate-200">
-            <form onSubmit={handleProfileSubmit(onProfileSubmit)}>
-              <label>Based on</label>
-              <Select
-                formRegister={registerProfile("basedOn")}
-                className="max-w-[400px]"
-                options={['Based on Price']}
-                value="Based on Price"
-              />
-              <RadioGroup
-                name="adjustmentType"
-                control={control}
-                label="Set price adjustment mode"
-                options={[{ value: "fixed", label: "Fixed ($)" }, { value: "dynamic", label: "Dynamic (%)" }]}
-              />
-              <RadioGroup
-                name="adjustmentMode"
-                control={control}
-                label="Set price adjustment increment mode"
-                options={[{ value: "increase", label: "Increase +" }, { value: "decrease", label: "Decrease -" }]}
-              />
-              <ProductTable
-                data={selectedProducts}
-                profile={profileFormValues}
-                adjustments={adjustmentFields}
-                onAdjustmentChange={handleAdjustmentChange}
-              />
-              <div className="flex justify-end gap-2">
-                <Button variant="text">Back</Button>
-                <Button
-                  type="submit"
-                  className="px-10"
-                  disabled={someNegatives}
-                >Submit</Button>
-              </div>
-            </form>
-          </div>
-        )}
+        <AssignCustomersCard />
       </Box>
-
-      <AssignCustomersCard />
-    </Box>
+    </div>
   );
 }
