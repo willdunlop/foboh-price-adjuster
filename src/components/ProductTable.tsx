@@ -7,7 +7,6 @@ import { Product } from '@prisma/client'; // Ensure the Product type is availabl
 import { Input } from './common/Input';
 import { ProfileFormValues } from '@/app/page';
 import { calculateNewPrice } from '@/utils';
-import { FieldErrors } from 'react-hook-form';
 import classNames from 'classnames';
 
 interface ProductTableProps {

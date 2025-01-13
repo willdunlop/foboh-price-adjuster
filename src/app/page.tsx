@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { PricingProfile, Product } from "@prisma/client";
 import { ProfileCard } from "@/components/ProfileCard";
 import { AssignCustomersCard } from "@/components/AssignCustomersCard";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { Select } from "@/components/common/Select";
 import { ProductTable } from "@/components/ProductTable";
 import { Input } from "@/components/common/Input";
