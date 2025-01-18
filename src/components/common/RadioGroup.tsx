@@ -17,7 +17,7 @@ export const RadioGroup = <T extends FieldValues>({ name, control, options, labe
             render={({ field }) => (
                 <div className="mt-6">
                     <label>{label}</label>
-                    <div className="flex gap-4 items-center mt-3">
+                    <div className="flex flex-col gap-4 mt-3 sm:flex-row sm:items-center">
                         {options.map((option) => (
                             <label key={option.value} className="flex items-center">
                                 <input

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box } from './common/Box';
+import cn from 'classnames';
 
 interface Props {
     title: string;
@@ -7,12 +8,15 @@ interface Props {
 export const ProfileCard = ({ title }: Props) => {
     return (
         <Box className="bg-white mt-6">
-            <div className="flex justify-between w-full pb-6 border-b border-slate-200">
+            <div className="flex flex-col-reverse justify-between w-full pb-6 border-b border-slate-200 sm:flex-row">
                 <div>
                     <h2 className="text-black-black font-medium">Basic Pricing Profile</h2>
                     <p className="text-sm text-black-grey">Cheeky little description goes in here</p>
                 </div>
-                <span className="relative pl-4 text-green-action font-medium inline-flex items-center before:content-[''] before:w-2 before:h-2 before:bg-green-action before:rounded-full before:mr-2">Completed</span>
+                <span className={cn(
+                    "relative pl-0 mb-2 text-green-action font-medium inline-flex items-center sm:pl-4 sm:mb-0",
+                    "before:content-[''] before:w-2 before:h-2 before:bg-green-action before:rounded-full before:mr-2"
+                )}>Completed</span>
             </div>
             <div className="mt-6 flex justify-between">
                 <div>

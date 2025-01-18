@@ -190,7 +190,7 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="w-full h-screen py-6 bg-green-primary">
+    <div className="w-full h-full px-3 py-6 bg-green-primary overflow-auto">
       <Box className="max-w-[1200px] mx-auto bg-slate-100 text-black-grey">
         <ToastContainer />
         <OnboardingBreadcrumb />
@@ -262,7 +262,7 @@ export default function Home() {
                   adjustments={adjustmentFields}
                   onAdjustmentChange={handleAdjustmentChange}
                 />
-                <div className="flex justify-end gap-2">
+                <div className="mt-4 flex justify-end gap-2">
                   <Button variant="text">Back</Button>
                   <Button
                     type="submit"

@@ -12,8 +12,8 @@ interface Props {
 
 export const ProductFilters = ({ filterFormValues, registerFilter, setFilterValue }: Props) => {
     return (
-        <form className="space-y-4">
-            <div className="grid grid-cols-5 gap-2">
+        <form className="space-y-4 mt-4">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-4">
                 <div>
                     <Input
                         formRegister={registerFilter("search")}

@@ -7,10 +7,15 @@
   --foreground: #171717;
 }
 
+html { 
+  height: 100%;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: var(--font-inter), sans-serif;
+  height: 100%;
 }
 
 .rs__control {
