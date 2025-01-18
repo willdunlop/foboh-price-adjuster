@@ -17,6 +17,9 @@ import { Button } from "@/components/common/Button";
 import { toast, ToastContainer } from "react-toastify";
 import { calculateNewPrice } from "@/utils";
 import { ProductFilters } from "@/components/ProductFilters";
+import { LoadingProfile, LoadingSearchResult } from "@/components/common/LoadingProfile";
+import { LoadingSearchResults } from "@/components/common/LoadingSearchResults";
+import { Loader } from "@/components/common/Loader";
 
 
 export interface FilterFormValues {
@@ -63,7 +66,8 @@ const profileSchema = z.object({
 
 export default function Home() {
   /** @TODO Implement loading */
-  const [, setLoading] = useState(false)
+  const [isLoadingProfile, setLoadingProfile] = useState(true)
+  const [isLoadingSearch, setLoadingSearch] = useState(true)
   const [priceProfile, setPriceProfile] = useState<PricingProfile | null>(null)
   const [products, setProducts] = useState<Product[]>([])
   const [selectedProducts, setSelectedProducts] = useState<Product[]>([])
@@ -81,7 +85,13 @@ export default function Home() {
   ), [filterFormValues.search, filterFormValues.category, filterFormValues.segment, filterFormValues.brand])
 
 
-  const { register: registerProfile, watch: watchProfile, control, handleSubmit: handleProfileSubmit } = useForm<ProfileFormValues>({
+  const {
+    register: registerProfile,
+    watch: watchProfile,
+    control,
+    handleSubmit: handleProfileSubmit,
+    formState: { isSubmitting }
+  } = useForm<ProfileFormValues>({
     defaultValues: profileFormDefaultValues,
     resolver: zodResolver(profileSchema)
   })
@@ -116,7 +126,7 @@ export default function Home() {
   };
 
   const fetchFilteredProducts = async (filters: FilterFormValues) => {
-    setLoading(true);
+    setLoadingSearch(true);
     try {
       const response = await fetch("/api/products", {
         method: "POST",
@@ -130,7 +140,7 @@ export default function Home() {
     } catch (error) {
       console.error("Error fetching products:", error);
     } finally {
-      setLoading(false);
+      setLoadingSearch(false);
     }
   };
 
@@ -146,7 +156,6 @@ export default function Home() {
 
   const onProfileSubmit = async (profileValues: ProfileFormValues) => {
     try {
-      setLoading(true);
       const res = await fetch("/api/pricing-profiles", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -162,9 +171,7 @@ export default function Home() {
     } catch (error) {
       console.error("Error updating pricing profile", error)
       toast.error("Error updating pricing profile")
-    } finally {
-      setLoading(false);
-    }
+    } 
   }
 
   useEffect(() => {
@@ -181,10 +188,18 @@ export default function Home() {
 
   useEffect(() => {
     const fetchPriceProfile = async () => {
-      const res = await fetch("/api/pricing-profiles")
-      if (!res.ok) throw new Error("Failed to fetch pricing profile")
-      const profile: PricingProfile[] = await res.json()
-      setPriceProfile(profile[0])
+      try {
+        setLoadingProfile(true)
+        const res = await fetch("/api/pricing-profiles")
+        if (!res.ok) throw new Error("Failed to fetch pricing profile")
+        const profile: PricingProfile[] = await res.json()
+        setPriceProfile(profile[0])
+      } catch (e) {
+        console.error("Error loading profile", e)
+      } finally {
+        setLoadingProfile(false)
+      }
+
     }
     fetchPriceProfile()
   }, [])
@@ -195,7 +210,7 @@ export default function Home() {
         <ToastContainer />
         <OnboardingBreadcrumb />
 
-        {priceProfile && (<ProfileCard title={priceProfile.title} />)}
+        <ProfileCard title={priceProfile?.title} isLoading={isLoadingProfile} />
 
         <Box className="bg-white mt-6">
           <div className="flex justify-between w-full pb-6 border-b border-slate-200">
@@ -220,14 +235,24 @@ export default function Home() {
 
           <div className="w-full py-6 border-b border-slate-200">
             <p>Showing {products.length} {products.length === 1 ? "Result" : "Results"} {isFiltered && `for ${filterFormValues.search} ${filterFormValues.category} ${filterFormValues.segment} ${filterFormValues.brand}`}</p>
-            {products.map((product) => (
-              <ProductSearchResult
-                key={product.id}
-                product={product}
-                checked={selectedProducts.some((p) => p.id === product.id)}
-                onChange={onProductSelect}
-              />
-            ))}
+            {
+              isLoadingSearch
+                ? (
+                  <div className="mx-auto mt-6 max-w-10">
+                    <Loader />
+                  </div>
+                )
+                : products.map((product) => (
+                  <ProductSearchResult
+                    key={product.id}
+                    product={product}
+                    checked={selectedProducts.some((p) => p.id === product.id)}
+                    onChange={onProductSelect}
+                  />
+                )
+                )
+            }
+
 
             {!!selectedProducts.length && (
               <p>You&apos;ve selected <span>{selectedProducts.length} Products</span>, these will be added to {priceProfile?.title}</p>
@@ -267,7 +292,7 @@ export default function Home() {
                   <Button
                     type="submit"
                     className="px-10"
-                    disabled={someNegatives}
+                    disabled={someNegatives || isSubmitting}
                   >Submit</Button>
                 </div>
               </form>
