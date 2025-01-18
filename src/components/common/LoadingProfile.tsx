@@ -1,12 +1,4 @@
-import { Product } from '@prisma/client';
 import React from 'react';
-
-interface Props {
-    product: Product;
-    checked: boolean;
-    onChange: (event: React.ChangeEvent<HTMLInputElement>, product: Product) => void;
-
-}
 
 export const LoadingProfile = () => {
     return (

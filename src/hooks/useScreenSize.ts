@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 export const useScreenSize = () => {
     const [width, setWidth] = useState(window.innerWidth);
