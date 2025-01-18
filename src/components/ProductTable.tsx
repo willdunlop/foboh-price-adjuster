@@ -5,9 +5,9 @@ import { useReactTable, getCoreRowModel } from '@tanstack/react-table';
 import { ColumnDef } from '@tanstack/react-table';
 import { Product } from '@prisma/client'; // Ensure the Product type is available
 import { Input } from './common/Input';
-import { ProfileFormValues } from '@/app/page';
 import { calculateNewPrice } from '@/utils';
 import classNames from 'classnames';
+import { ProfileFormValues } from '@/app/app/pricing/page';
 
 interface ProductTableProps {
     data: Product[];

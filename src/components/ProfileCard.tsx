@@ -2,6 +2,7 @@ import React from 'react';
 import { Box } from './common/Box';
 import cn from 'classnames';
 import { LoadingProfile } from './common/LoadingProfile';
+import { DisplayItem } from './common/DisplayItem';
 
 interface Props {
     title?: string;
@@ -24,14 +25,11 @@ export const ProfileCard = ({ title, isLoading = false }: Props) => {
                 isLoading
                     ? <LoadingProfile />
                     : (
-
-                        <div className="mt-6 flex justify-between">
-                            <div>
-                                <p className="text-xs">You&apos;ve created a Price Profile</p>
-                                <h3 className="text-sm text-black-black font-medium">{title}</h3>
-                                <p className="text-xs">Marked as Default, and expires in 16 Days</p>
-                            </div>
-                        </div>
+                        <DisplayItem
+                            heading="You've created a Price Profile"
+                            title={title}
+                            subHeading="Marked as Default, and expires in 16 Days"
+                        />
                     )
             }
 

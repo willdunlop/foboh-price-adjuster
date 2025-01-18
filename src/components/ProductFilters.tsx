@@ -2,7 +2,7 @@ import React from 'react';
 import { Input } from './common/Input';
 import { Select } from './common/Select';
 import { UseFormRegister, UseFormSetValue } from 'react-hook-form';
-import { FilterFormValues } from '@/app/page';
+import { FilterFormValues } from '@/app/app/pricing/page';
 
 interface Props {
     filterFormValues: FilterFormValues

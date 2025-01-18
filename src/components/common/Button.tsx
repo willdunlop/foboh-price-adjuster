@@ -10,7 +10,7 @@ interface Props extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLB
     variant?: Variant
 }
 
-export const Button = ({ variant="primary",  children, disabled, className }: Props) => {
+export const Button = ({ variant="primary", children, disabled, className, onClick }: Props) => {
     return (
         <button
             className={cn(
@@ -25,6 +25,7 @@ export const Button = ({ variant="primary",  children, disabled, className }: Pr
                 className
             )}
             disabled={disabled}
+            onClick={onClick}
         >
             {children}
         </button>
