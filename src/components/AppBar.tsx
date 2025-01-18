@@ -3,9 +3,10 @@ import dayjs from 'dayjs';
 import React from 'react';
 
 export const AppBar = () => {
+    
     return (
-        <div className="flex justify-end md:justify-between bg-green-primary text-white px-4 py-5">
-            <div className="hidden md:block">
+        <div className="fixed w-full lg:w-[calc(100%-260px)] flex justify-end shadow-md sm:justify-between bg-green-primary text-white px-4 py-5">
+            <div className="hidden sm:block sm:ml-11 lg:ml-0">
                 <p className="font-semibold">Hello, FOBOH</p>
                 <p>{dayjs().format('ddd, DD MMMM YYYY ')}</p>
             </div>
@@ -21,7 +22,7 @@ export const AppBar = () => {
                 </div>
                 {/** User menu */}
                 <div className="flex gap-2 items-center">
-                    <div className="hidden md:block">
+                    <div className="hidden sm:block">
                         <p className="font-semibold">FOBOH Team</p>
                         <p>Cork & Barrel Cellar</p>
                     </div>

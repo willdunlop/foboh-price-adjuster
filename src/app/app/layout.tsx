@@ -1,4 +1,6 @@
-import "../globals.css";
+'use client';
+
+import React, { useState } from 'react';
 import { Sidebar } from "@/components/Sidebar";
 import { AppBar } from "@/components/AppBar";
 
@@ -8,12 +10,13 @@ export default function AppLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   return (
     <div className="h-full flex">
-      <Sidebar />
-      <div className="w-full h-full">
+      <Sidebar isOpen={isSidebarOpen} onOpen={() => setIsSidebarOpen(!isSidebarOpen)} />
+      <div className="relative ml-0 lg:ml-[260px] w-full h-full">
         <AppBar />
-        <div className="overflow-y-auto">
+        <div className="mt-16 overflow-y-visible">
           {children}
         </div>
       </div>

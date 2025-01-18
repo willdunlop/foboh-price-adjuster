@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { z } from "zod";
 import { Box } from "@/components/common/Box";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -331,7 +332,7 @@ export default function Home() {
                           onAdjustmentChange={handleAdjustmentChange}
                         />
                         <div className="mt-4 flex justify-end gap-2">
-                          <Button variant="text" type="button">Back</Button>
+                          <Button variant="text" type="button" onClick={() => setIsEdit(false)}>Back</Button>
                           <Button
                             type="submit"
                             className="px-10"
