@@ -2,7 +2,7 @@
 
 import { Bars3Icon, ChartPieIcon, Cog6ToothIcon, CpuChipIcon, CubeIcon, ShoppingBagIcon, TagIcon, TruckIcon, UserCircleIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React from 'react';
 import { Logo } from "@/assets/Logo"
 import { Button } from './common/Button';
 import cn from 'classnames';
